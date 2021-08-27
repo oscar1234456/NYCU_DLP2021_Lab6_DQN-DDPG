@@ -37,12 +37,23 @@ class ReplayMemory:
 class Net(nn.Module):
     def __init__(self, state_dim=8, action_dim=4, hidden_dim=32):
         super().__init__()
-        ## TODO ##
-        raise NotImplementedError
+        ##TODO##
+        self.firstLayer = nn.Sequential(
+            nn.Linear(in_features=8, out_features=32),
+            nn.ReLU()
+        )
+        self.secondLayer = nn.Sequential(
+            nn.Linear(in_features=32, out_features=32),
+            nn.ReLU()
+        )
+        self.thirdLayer = nn.Linear(in_features=32, out_features=4)
 
     def forward(self, x):
         ## TODO ##
-        raise NotImplementedError
+        out = self.firstLayer(x.view(-1, 8))
+        out = self.secondLayer(out)
+        out = self.thirdLayer(out)
+        return out
 
 
 class DQN:
@@ -52,8 +63,7 @@ class DQN:
         # initialize target network
         self._target_net.load_state_dict(self._behavior_net.state_dict())
         ## TODO ##
-        # self._optimizer = ?
-        raise NotImplementedError
+        self._optimizer = torch.optim.Adam(self._behavior_net.parameters(), lr = args.lr)
         # memory
         self._memory = ReplayMemory(capacity=args.capacity)
 
@@ -67,7 +77,14 @@ class DQN:
     def select_action(self, state, epsilon, action_space):
         '''epsilon-greedy based on behavior network'''
          ## TODO ##
-        raise NotImplementedError
+        sample = random.random()
+        state_Tensor = torch.FloatTensor(state)
+        state_Tensor = state_Tensor.to(self.device)
+        if sample > epsilon:
+            with torch.no_grad():
+                return self._behavior_net(state_Tensor).max(1)[1].view(1, 1).item()
+        else:
+            return random.randrange(action_space.n)
 
     def append(self, state, action, reward, next_state, done):
         self._memory.append(state, [action], [reward / 10], next_state,
@@ -127,7 +144,7 @@ class DQN:
 def train(args, env, agent, writer):
     print('Start Training')
     action_space = env.action_space
-    total_steps, epsilon = 0, 1.
+    total_steps, epsilon = 0, 0.
     ewma_reward = 0
     for episode in range(args.episode):
         total_reward = 0
@@ -135,12 +152,13 @@ def train(args, env, agent, writer):
         for t in itertools.count(start=1):
             # select action
             if total_steps < args.warmup:
-                action = action_space.sample()
+                action = action_space.sample()  # output: int(1)
             else:
                 action = agent.select_action(state, epsilon, action_space)
                 epsilon = max(epsilon * args.eps_decay, args.eps_min)
             # execute action
             next_state, reward, done, _ = env.step(action)
+            # next_state:ndarray(8), reward:float(1), done:bool(1)
             # store transition
             agent.append(state, action, reward, next_state, done)
             if total_steps >= args.warmup:
