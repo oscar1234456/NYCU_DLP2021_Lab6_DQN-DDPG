@@ -2,9 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="16a54c51-9be3-45cf-af3f-f14bcaa54392" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/rl_dgq.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rl_dgq.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checkpoint.pth" beforeDir="false" afterPath="$PROJECT_DIR$/modelWeight/0827test1/checkpoint.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ddpg-example.py" beforeDir="false" afterPath="$PROJECT_DIR$/ddpg-example.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dqn-example.py" beforeDir="false" afterPath="$PROJECT_DIR$/dqn-example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058144.DESKTOP-Oscar.13440.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058318.DESKTOP-Oscar.24248.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058334.DESKTOP-Oscar.22816.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058492.DESKTOP-Oscar.20920.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058531.DESKTOP-Oscar.23220.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630058573.DESKTOP-Oscar.2980.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630059168.DESKTOP-Oscar.9636.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630059198.DESKTOP-Oscar.21196.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630059824.DESKTOP-Oscar.16492.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630060531.DESKTOP-Oscar.3488.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630060663.DESKTOP-Oscar.60.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630060772.DESKTOP-Oscar.15532.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630060871.DESKTOP-Oscar.2980.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630060945.DESKTOP-Oscar.23440.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630061021.DESKTOP-Oscar.10276.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630061071.DESKTOP-Oscar.24236.0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630061167.DESKTOP-Oscar.13456.0" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,9 +54,11 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\陳泰元\PycharmProjects\rl_dgq\modelWeight\0827test1" />
       <recent name="C:\Users\陳泰元\PycharmProjects\rl_dgq" />
     </key>
   </component>
@@ -120,8 +144,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.dqn-example" />
-        <item itemvalue="Python.test2" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.test2" />
       </list>
     </recent_temporary>
   </component>
@@ -136,7 +160,8 @@
       <option name="presentableId" value="Default" />
       <updated>1629947985777</updated>
       <workItem from="1629947986873" duration="1516000" />
-      <workItem from="1630042920188" duration="14591000" />
+      <workItem from="1630042920188" duration="15023000" />
+      <workItem from="1630065876261" duration="13388000" />
     </task>
     <servers />
   </component>
@@ -148,7 +173,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -158,32 +185,32 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dqn-example.py</url>
-          <line>86</line>
-          <option name="timeStamp" value="13" />
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <line>222</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dqn-example.py</url>
-          <line>84</line>
-          <option name="timeStamp" value="14" />
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <line>224</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="action" language="Python" />
-        <watch expression="next_state" language="Python" />
+        <watch expression="td_target" language="Python" />
+        <watch expression="next_state_value" language="Python" />
+        <watch expression="next_state_value.view(-1,1)" language="Python" />
+        <watch expression="next_state_value.view(-1,1)*gamma+reward" language="Python" />
+        <watch expression="gamma" language="Python" />
         <watch expression="reward" language="Python" />
-        <watch expression="done" language="Python" />
-        <watch expression="_" language="Python" />
-        <watch expression="state" language="Python" />
-        <watch expression="epsilon" language="Python" />
+        <watch expression="rewards" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rl_dgq$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1630052325544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rl_dgq$test.coverage" NAME="test Coverage Results" MODIFIED="1630043541602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rl_dgq$dqn_example.coverage" NAME="dqn-example Coverage Results" MODIFIED="1630061162376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rl_dgq$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1630069704505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rl_dgq$test.coverage" NAME="test Coverage Results" MODIFIED="1630069712425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rl_dgq$dqn_example.coverage" NAME="dqn-example Coverage Results" MODIFIED="1630077618713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

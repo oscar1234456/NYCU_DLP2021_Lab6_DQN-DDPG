@@ -46,11 +46,23 @@ class ActorNet(nn.Module):
     def __init__(self, state_dim=8, action_dim=2, hidden_dim=(400, 300)):
         super().__init__()
         ## TODO ##
-        raise NotImplementedError
+        h1, h2 = hidden_dim
+        self.actor_head = nn.Sequential(
+            nn.Linear(state_dim, h1),
+            nn.ReLU(),
+        )
+        self.actor = nn.Sequential(
+            nn.Linear(h1, h2),
+            nn.ReLU(),
+            nn.Linear(h2, action_dim),
+        )
 
     def forward(self, x):
         ## TODO ##
-        raise NotImplementedError
+        x = self.actor_head(x)  #x input: N*state_dim(8) / x output: N*h1(400)
+        out = self.actor(x)
+        return out  #N*action_dim(2)
+
 
 
 class CriticNet(nn.Module):
@@ -84,9 +96,9 @@ class DDPG:
         self._target_actor_net.load_state_dict(self._actor_net.state_dict())
         self._target_critic_net.load_state_dict(self._critic_net.state_dict())
         ## TODO ##
-        # self._actor_opt = ?
-        # self._critic_opt = ?
-        raise NotImplementedError
+        self._actor_opt = torch.optim.Adam(self._actor_net.parameters(), lr = args.lr)
+        self._critic_opt = torch.optim.Adam(self._critic_net.parameters(), lr = args.lr)
+
         # action noise
         self._action_noise = GaussianNoise(dim=2)
         # memory

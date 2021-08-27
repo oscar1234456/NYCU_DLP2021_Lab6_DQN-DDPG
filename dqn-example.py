@@ -62,6 +62,7 @@ class DQN:
         self._target_net = Net().to(args.device)
         # initialize target network
         self._target_net.load_state_dict(self._behavior_net.state_dict())
+        self._target_net.eval()
         ## TODO ##
         self._optimizer = torch.optim.Adam(self._behavior_net.parameters(), lr = args.lr)
         # memory
@@ -98,17 +99,20 @@ class DQN:
 
     def _update_behavior_network(self, gamma):
         # sample a minibatch of transitions
-        state, action, reward, next_state, done = self._memory.sample(
-            self.batch_size, self.device)
-
+        state, action, reward, next_state, done = self._memory.sample(self.batch_size, self.device)
+        # state:tensor(N*8),action: tensor(N*1),reward:torch(N*1), next_state:tensor(N*8), done:Floattensor(N*1)
         ## TODO ##
-        # q_value = ?
-        # with torch.no_grad():
-        #    q_next = ?
-        #    q_target = ?
-        # criterion = ?
-        # loss = criterion(q_value, q_target)
-        raise NotImplementedError
+
+        state_action_values = self._behavior_net(state).gather(1, action.type("torch.LongTensor").to(self.device))
+        non_final_mask = ~done.type("torch.BoolTensor").to(self.device).view(-1)  #True-> non_final / False->final
+        non_final_next_state = next_state[non_final_mask]
+        next_state_value = torch.zeros(self.batch_size, device=self.device)
+        next_state_value[non_final_mask] = self._target_net(non_final_next_state).max(1)[0].detach()
+
+        td_target = (next_state_value.view(-1,1) * gamma) + reward
+
+        criterion = nn.SmoothL1Loss()
+        loss = criterion(state_action_values, td_target)
         # optimize
         self._optimizer.zero_grad()
         loss.backward()
@@ -118,7 +122,7 @@ class DQN:
     def _update_target_network(self):
         '''update target network by copying from behavior network'''
         ## TODO ##
-        raise NotImplementedError
+        self._target_net.load_state_dict(self._behavior_net.state_dict())
 
     def save(self, model_path, checkpoint=False):
         if checkpoint:
@@ -144,7 +148,7 @@ class DQN:
 def train(args, env, agent, writer):
     print('Start Training')
     action_space = env.action_space
-    total_steps, epsilon = 0, 0.
+    total_steps, epsilon = 0, 1.
     ewma_reward = 0
     for episode in range(args.episode):
         total_reward = 0
@@ -192,11 +196,25 @@ def test(args, env, agent, writer):
         env.seed(seed)
         state = env.reset()
         ## TODO ##
-        # ...
-        #     if done:
-        #         writer.add_scalar('Test/Episode Reward', total_reward, n_episode)
-        #         ...
-        raise NotImplementedError
+        for t in itertools.count(start=1):
+            # select action
+
+            action = agent.select_action(state, epsilon, action_space)
+
+            # execute action
+            next_state, reward, done, _ = env.step(action)
+            # next_state:ndarray(8), reward:float(1), done:bool(1)
+            # store transition
+            agent.append(state, action, reward, next_state, done)
+            state = next_state
+            total_reward+=reward
+            if done:
+                writer.add_scalar('Test/Episode Reward', total_reward, n_episode)
+                print(
+                    'Episode: {}\tLength: {:3d}\tTotal reward: {:.2f}\tEpsilon: {:.3f}'
+                        .format(n_episode, t, total_reward, epsilon))
+                break
+        rewards.append(total_reward)
     print('Average Reward', np.mean(rewards))
     env.close()
 
@@ -233,8 +251,10 @@ def main():
         train(args, env, agent, writer)
         agent.save(args.model)
     agent.load(args.model)
+    agent._behavior_net.eval()
     test(args, env, agent, writer)
+    agent._behavior_net.train()
 
-
+##
 if __name__ == '__main__':
     main()
