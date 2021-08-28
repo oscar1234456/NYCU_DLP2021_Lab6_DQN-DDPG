@@ -191,6 +191,8 @@ def test(args, env, agent, writer):
     epsilon = args.test_epsilon
     seeds = (args.seed + i for i in range(10))
     rewards = []
+    total_steps = 0
+    ewma_reward = 0
     for n_episode, seed in enumerate(seeds):
         total_reward = 0
         env.seed(seed)
@@ -208,11 +210,17 @@ def test(args, env, agent, writer):
             agent.append(state, action, reward, next_state, done)
             state = next_state
             total_reward+=reward
+            total_steps += 1
+
             if done:
-                writer.add_scalar('Test/Episode Reward', total_reward, n_episode)
+                ewma_reward = 0.05 * total_reward + (1 - 0.05) * ewma_reward
+                writer.add_scalar('Test/Episode Reward', total_reward,
+                                  total_steps)
+                writer.add_scalar('Test/Ewma Reward', ewma_reward,
+                                  total_steps)
                 print(
-                    'Episode: {}\tLength: {:3d}\tTotal reward: {:.2f}\tEpsilon: {:.3f}'
-                        .format(n_episode, t, total_reward, epsilon))
+                    'Episode: {}\tLength: {:3d}\tTotal reward: {:.2f}\tEwma reward: {:.2f}'
+                    .format(n_episode, t, total_reward, ewma_reward))
                 break
         rewards.append(total_reward)
     print('Average Reward', np.mean(rewards))
@@ -227,9 +235,9 @@ def main():
     parser.add_argument('--logdir', default='log/dqn')
     # train
     parser.add_argument('--warmup', default=10000, type=int)
-    parser.add_argument('--episode', default=1200, type=int)
+    parser.add_argument('--episode', default=2200, type=int)
     parser.add_argument('--capacity', default=10000, type=int)
-    parser.add_argument('--batch_size', default=128, type=int)
+    parser.add_argument('--batch_size', default=64, type=int)
     parser.add_argument('--lr', default=.0005, type=float)
     parser.add_argument('--eps_decay', default=.995, type=float)
     parser.add_argument('--eps_min', default=.01, type=float)

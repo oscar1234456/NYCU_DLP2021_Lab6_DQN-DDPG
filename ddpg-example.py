@@ -39,7 +39,9 @@ class ReplayMemory:
     def sample(self, batch_size, device):
         '''sample a batch of transition tensors'''
         ## TODO ##
-        raise NotImplementedError
+        transitions = random.sample(self.buffer, batch_size)
+        return (torch.tensor(x, dtype=torch.float, device=device)
+                for x in zip(*transitions))
 
 
 class ActorNet(nn.Module):
@@ -55,6 +57,7 @@ class ActorNet(nn.Module):
             nn.Linear(h1, h2),
             nn.ReLU(),
             nn.Linear(h2, action_dim),
+            nn.Tanh()
         )
 
     def forward(self, x):
@@ -95,9 +98,11 @@ class DDPG:
         # initialize target network
         self._target_actor_net.load_state_dict(self._actor_net.state_dict())
         self._target_critic_net.load_state_dict(self._critic_net.state_dict())
+        self._target_actor_net.eval()
+        self._target_critic_net.eval()
         ## TODO ##
-        self._actor_opt = torch.optim.Adam(self._actor_net.parameters(), lr = args.lr)
-        self._critic_opt = torch.optim.Adam(self._critic_net.parameters(), lr = args.lr)
+        self._actor_opt = torch.optim.Adam(self._actor_net.parameters(), lr = args.lra)
+        self._critic_opt = torch.optim.Adam(self._critic_net.parameters(), lr = args.lrc)
 
         # action noise
         self._action_noise = GaussianNoise(dim=2)
@@ -113,7 +118,21 @@ class DDPG:
     def select_action(self, state, noise=True):
         '''based on the behavior (actor) network and exploration noise'''
         ## TODO ##
-        raise NotImplementedError
+        state_Tensor = torch.FloatTensor(state)
+        state_Tensor = state_Tensor.to(self.device)
+
+        if noise:
+            noiseTensor = torch.FloatTensor(self._action_noise.sample())
+            noiseTensor = noiseTensor.to(self.device)
+            with torch.no_grad():
+                action = self._actor_net(state_Tensor)
+                action_plus_noise = action + noiseTensor
+                return  action_plus_noise.cpu().numpy()
+        else:
+            with torch.no_grad():
+                action = self._actor_net(state_Tensor)
+                return action.cpu().numpy()
+
 
     def append(self, state, action, reward, next_state, done):
         self._memory.append(state, action, [reward / 100], next_state,
@@ -133,44 +152,42 @@ class DDPG:
         actor_opt, critic_opt = self._actor_opt, self._critic_opt
 
         # sample a minibatch of transitions
-        state, action, reward, next_state, done = self._memory.sample(
-            self.batch_size, self.device)
-
+        state, action, reward, next_state, done = self._memory.sample(self.batch_size, self.device)
+        # state:tensor(N*8),action: tensor(N*1),reward:torch(N*1), next_state:tensor(N*8), done:Floattensor(N*1)
         ## update critic ##
         # critic loss
-        ## TODO ##
-        # q_value = ?
-        # with torch.no_grad():
-        #    a_next = ?
-        #    q_next = ?
-        #    q_target = ?
-        # criterion = ?
-        # critic_loss = criterion(q_value, q_target)
-        raise NotImplementedError
-        # optimize critic
-        actor_net.zero_grad()
-        critic_net.zero_grad()
-        critic_loss.backward()
-        critic_opt.step()
+        state_action_q_value = self._critic_net(state, action)
 
-        ## update actor ##
-        # actor loss
-        ## TODO ##
-        # action = ?
-        # actor_loss = ?
-        raise NotImplementedError
-        # optimize actor
-        actor_net.zero_grad()
-        critic_net.zero_grad()
-        actor_loss.backward()
-        actor_opt.step()
+        non_final_mask = ~done.type("torch.BoolTensor").to(self.device).view(-1)  # True-> non_final / False->final
+        non_final_next_state = next_state[non_final_mask]
+        next_state_q_value = torch.zeros(self.batch_size, device=self.device)
+
+        next_state_action = self._target_actor_net(non_final_next_state).detach()
+        next_state_q_value[non_final_mask] = self._target_critic_net(non_final_next_state, next_state_action).detach().view(-1)
+
+        td_target = (next_state_q_value.view(-1, 1) * gamma) + reward
+
+        criterion = nn.MSELoss()
+        critic_net_loss = criterion(state_action_q_value, td_target)
+        self._critic_opt.zero_grad()
+        critic_net_loss.backward()
+        self._critic_opt.step()
+
+        ## update acttor ##
+        state_action = self._actor_net(state)
+        actor_net_loss = - torch.mean(self._critic_net(state, state_action))
+
+        self._actor_opt.zero_grad()
+        actor_net_loss.backward()
+        self._actor_opt.step()
+
 
     @staticmethod
     def _update_target_network(target_net, net, tau):
         '''update target network by _soft_ copying from behavior network'''
         for target, behavior in zip(target_net.parameters(), net.parameters()):
             ## TODO ##
-            raise NotImplementedError
+            target.data.copy_(tau*behavior.data + (1.0-tau)*target.data)
 
     def save(self, model_path, checkpoint=False):
         if checkpoint:
@@ -213,7 +230,7 @@ def train(args, env, agent, writer):
             if total_steps < args.warmup:
                 action = env.action_space.sample()
             else:
-                action = agent.select_action(state)
+                action = agent.select_action(state, False)
             # execute action
             next_state, reward, done, _ = env.step(action)
             # store transition
@@ -232,8 +249,7 @@ def train(args, env, agent, writer):
                                   total_steps)
                 print(
                     'Step: {}\tEpisode: {}\tLength: {:3d}\tTotal reward: {:.2f}\tEwma reward: {:.2f}'
-                    .format(total_steps, episode, t, total_reward,
-                            ewma_reward))
+                    .format(total_steps, episode, t, total_reward, ewma_reward))
                 break
     env.close()
 
@@ -242,16 +258,34 @@ def test(args, env, agent, writer):
     print('Start Testing')
     seeds = (args.seed + i for i in range(10))
     rewards = []
+    total_steps = 0
+    ewma_reward = 0
     for n_episode, seed in enumerate(seeds):
         total_reward = 0
         env.seed(seed)
         state = env.reset()
         ## TODO ##
-        # ...
-        #     if done:
-        #         writer.add_scalar('Test/Episode Reward', total_reward, n_episode)
-        #         ...
-        raise NotImplementedError
+        for t in itertools.count(start=1):
+            # select action
+            action = agent.select_action(state, noise=False)
+            # execute action
+            next_state, reward, done, _ = env.step(action)
+            # next_state:ndarray(8), reward:float(1), done:bool(1)
+            # store transition
+            agent.append(state, action, reward, next_state, done)
+            state = next_state
+            total_reward += reward
+            total_steps += 1
+
+            if done:
+                ewma_reward = 0.05 * total_reward + (1 - 0.05) * ewma_reward
+                writer.add_scalar('Test/Episode Reward', total_reward,total_steps)
+                writer.add_scalar('Test/Ewma Reward', ewma_reward,total_steps)
+                print(
+                    'Episode: {}\tLength: {:3d}\tTotal reward: {:.2f}\tEwma reward: {:.2f}'
+                    .format(n_episode, t, total_reward, ewma_reward))
+                break
+        rewards.append(total_reward)
     print('Average Reward', np.mean(rewards))
     env.close()
 
@@ -274,7 +308,7 @@ def main():
     # test
     parser.add_argument('--test_only', action='store_true')
     parser.add_argument('--render', action='store_true')
-    parser.add_argument('--seed', default=20200519, type=int)
+    parser.add_argument('--seed', default=20210829, type=int)
     args = parser.parse_args()
 
     ## main ##
