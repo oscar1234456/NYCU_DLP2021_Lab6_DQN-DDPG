@@ -88,8 +88,7 @@ class DQN:
             return random.randrange(action_space.n)
 
     def append(self, state, action, reward, next_state, done):
-        self._memory.append(state, [action], [reward / 10], next_state,
-                            [int(done)])
+        self._memory.append(state, [action], [reward / 10], next_state,[int(done)])
 
     def update(self, total_steps):
         if total_steps % self.freq == 0:
@@ -200,9 +199,7 @@ def test(args, env, agent, writer):
         ## TODO ##
         for t in itertools.count(start=1):
             # select action
-
             action = agent.select_action(state, epsilon, action_space)
-
             # execute action
             next_state, reward, done, _ = env.step(action)
             # next_state:ndarray(8), reward:float(1), done:bool(1)
@@ -211,7 +208,6 @@ def test(args, env, agent, writer):
             state = next_state
             total_reward+=reward
             total_steps += 1
-
             if done:
                 ewma_reward = 0.05 * total_reward + (1 - 0.05) * ewma_reward
                 writer.add_scalar('Test/Episode Reward', total_reward,

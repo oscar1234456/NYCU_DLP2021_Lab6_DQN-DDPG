@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ddpg-example.py" beforeDir="false" afterPath="$PROJECT_DIR$/ddpg-example.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dqn-example.py" beforeDir="false" afterPath="$PROJECT_DIR$/dqn-example.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/dqn/events.out.tfevents.1630077615.ec037-055.23775.0" beforeDir="false" afterPath="$PROJECT_DIR$/oldLog/0827Test2/events.out.tfevents.1630077615.ec037-055.23775.0" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -165,7 +164,8 @@
       <workItem from="1629947986873" duration="1516000" />
       <workItem from="1630042920188" duration="15023000" />
       <workItem from="1630065876261" duration="14190000" />
-      <workItem from="1630115765965" duration="18977000" />
+      <workItem from="1630115765965" duration="21949000" />
+      <workItem from="1630213660483" duration="24676000" />
     </task>
     <servers />
   </component>
@@ -190,17 +190,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/dqn-example.py</url>
-          <line>85</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dqn-example.py</url>
-          <line>239</line>
+          <line>235</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/dqn-example.py</url>
-          <line>237</line>
+          <line>233</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
@@ -221,7 +216,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/rl_dgq$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1630069704505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/rl_dgq$test.coverage" NAME="test Coverage Results" MODIFIED="1630069712425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rl_dgq$dqn_example.coverage" NAME="dqn-example Coverage Results" MODIFIED="1630153849381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/rl_dgq$ddpg_example.coverage" NAME="ddpg-example Coverage Results" MODIFIED="1630154621589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rl_dgq$dqn_example.coverage" NAME="dqn-example Coverage Results" MODIFIED="1630155260895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rl_dgq$ddpg_example.coverage" NAME="ddpg-example Coverage Results" MODIFIED="1630235294251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -135,8 +135,7 @@ class DDPG:
 
 
     def append(self, state, action, reward, next_state, done):
-        self._memory.append(state, action, [reward / 100], next_state,
-                            [int(done)])
+        self._memory.append(state, action, [reward / 100], next_state,[int(done)])
 
     def update(self):
         # update the behavior networks
@@ -230,7 +229,7 @@ def train(args, env, agent, writer):
             if total_steps < args.warmup:
                 action = env.action_space.sample()
             else:
-                action = agent.select_action(state, False)
+                action = agent.select_action(state, True)  #True
             # execute action
             next_state, reward, done, _ = env.step(action)
             # store transition
